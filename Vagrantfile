@@ -33,24 +33,24 @@ SCRIPT
 
 
 Vagrant.configure(2) do |config|
-  config.vm.define "swarm_manager" do |config|
-    config.vm.box = "hashicorp/trusty64"
+  config.vm.define "swarm_manager_00" do |config|
+    config.vm.box = "ubuntu/trusty64"
     config.vm.hostname = "swarm-manager-00"
     config.vm.network "private_network", ip: "10.0.7.11"
     config.vm.provision "shell", inline: $prepare_swarm_manager_script
     config.vm.synced_folder ".", "/vagrant", disabled: true
   end
 
-  config.vm.define "swarm_node1" do |config|
-    config.vm.box = "hashicorp/trusty64"
+  config.vm.define "swarm_agent_00" do |config|
+    config.vm.box = "ubuntu/trusty64"
     config.vm.hostname = "swarm-agent-00"
     config.vm.network "private_network", ip: "10.0.7.12"
     config.vm.provision "shell", inline: $prepare_swarm_node1_script
     config.vm.synced_folder ".", "/vagrant", disabled: true
   end
 
-  config.vm.define "swarm_node2" do |config|
-    config.vm.box = "hashicorp/trusty64"
+  config.vm.define "swarm_agent_01" do |config|
+    config.vm.box = "ubuntu/trusty64"
     config.vm.hostname = "swarm-agent-01"
     config.vm.network "private_network", ip: "10.0.7.13"
     config.vm.provision "shell", inline: $prepare_swarm_node2_script
