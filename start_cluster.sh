@@ -3,8 +3,8 @@
 SWARM_VERSION=1.2.0
 MANAGER0_IP=10.0.7.11
 CONSUL0_IP=10.0.7.11
-NODE1_IP=10.0.7.12
-NODE2_IP=10.0.7.13
+NODE0_IP=10.0.7.12
+NODE1_IP=10.0.7.13
 
 # Run Consul on every Host (Consul can thus be running as master on any of these nodes!)
 #  $ docker run -d -p 8500:8500 --name=consul progrium/consul -server -bootstrap
