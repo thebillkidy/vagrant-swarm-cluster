@@ -1,34 +1,16 @@
 $prepare_swarm_manager_script = <<SCRIPT
 # Install Docker
 curl -sSL https://get.docker.com/ | sh
-
-# Configure docker
-#service docker stop;
-#rm -rf /etc/docker/key.json
-#echo 'DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=consul://10.0.7.11:8500 --cluster-advertise=eth1:2375"' | tee -a /etc/default/docker;
-#service docker start;
 SCRIPT
 
 $prepare_swarm_node1_script = <<SCRIPT
 # Install Docker
 curl -sSL https://get.docker.com/ | sh
-
-# Configure docker
-#service docker stop;
-#rm -rf /etc/docker/key.json;
-#echo 'DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=consul://10.0.7.12:8500 --cluster-advertise=eth1:2375"' | tee -a /etc/default/docker;
-#service docker start;
 SCRIPT
 
 $prepare_swarm_node2_script = <<SCRIPT
 # Install Docker
 curl -sSL https://get.docker.com/ | sh
-
-# Configure docker
-#service docker stop;
-#rm -rf /etc/docker/key.json;
-#echo 'DOCKER_OPTS="-H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=consul://10.0.7.13:8500 --cluster-advertise=eth1:2375"' | tee -a /etc/default/docker;
-#service docker start;
 SCRIPT
 
 
