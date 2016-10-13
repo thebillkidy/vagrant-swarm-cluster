@@ -14,6 +14,15 @@ vagrant ssh swarm_agent_01 -c "docker swarm join --token ${SWARM_TOKEN} ${MANAGE
 # Create a network for monitoring tools
 vagrant ssh swarm_manager_00 -c "sudo docker network create monitoring -d overlay"
 
+# Create a Kafka Service
+sudo docker service create \
+  --network=monitoring \
+  --env KAFKA=localhost:9092 --env ZOOKEEPER=localhost:2181 \
+  --publish 2181:2181 --publish 9092:9092 \
+  --name kafka \
+  --replicas 1 \
+  antlypls/kafka
+
 # Start CAdvisor in global mode (an instance on every container) and forward 8080 so we can access the web UI if needed
 sudo docker service create --network=monitoring --mode global --name cadvisor \
   --mount type=bind,source=/,target=/rootfs,readonly=true \
@@ -21,8 +30,10 @@ sudo docker service create --network=monitoring --mode global --name cadvisor \
   --mount type=bind,source=/sys,target=/sys,readonly=true \
   --mount type=bind,source=/var/lib/docker/,target=/var/lib/docker,readonly=true \
   --publish 8080:8080 \
-  google/cadvisor:latest
-# TODO: Change this to kafka
+  google/cadvisor:latest \
+  -storage_driver=kafka \
+  -storage_driver_kafka_broker_list=localhost:9092 `# Same as the specified ENV variable in the kafka service` \
+  -storage_driver_kafka_topic=container_stats `# Topic name`
 #  -storage_driver=elasticsearch \
 #  -storage_driver_es_host="http://elasticsearch:9200"
 
