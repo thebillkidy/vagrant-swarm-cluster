@@ -17,6 +17,7 @@ vagrant ssh swarm_manager_00 -c "sudo docker network create monitoring -d overla
 # Create a Kafka Service
 sudo docker service create \
   --network=monitoring \
+  --reserve-memory=3221225472 \
   --env KAFKA=localhost:9092 --env ZOOKEEPER=localhost:2181 \
   --publish 2181:2181 --publish 9092:9092 \
   --name kafka \
