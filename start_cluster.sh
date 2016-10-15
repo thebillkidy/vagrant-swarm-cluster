@@ -33,7 +33,7 @@ vagrant ssh swarm_manager_00 -c "sudo docker service create --network=monitoring
   --publish 8080:8080 \
   google/cadvisor:latest \
   -storage_driver=kafka \
-  -storage_driver_kafka_broker_list=localhost:9092 `# Same as the specified ENV variable in the kafka service` \
+  -storage_driver_kafka_broker_list=kafka:9092 `# Same as the specified ENV variable in the kafka service` \
   -storage_driver_kafka_topic=container_stats `# Topic name`"
 #  -storage_driver=elasticsearch \
 #  -storage_driver_es_host="http://elasticsearch:9200"
