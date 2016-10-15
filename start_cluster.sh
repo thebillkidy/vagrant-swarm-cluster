@@ -4,7 +4,7 @@ NODE0_IP=10.0.7.12
 NODE1_IP=10.0.7.13
 
 # Create manager and get the token
-vagrant ssh swarm_manager_00 -c "sudo docker swarm init --advertise-addr ${MANAGER0_IP}"
+vagrant ssh swarm_manager_00 -c "sudo docker swarm init --advertise-addr ${MANAGER0_IP} --listen-addr ${MANAGER0_IP}"
 SWARM_TOKEN=`vagrant ssh swarm_manager_00 -c "sudo docker swarm join-token -q worker --quiet"`
 
 # Add the nodes to this manager
