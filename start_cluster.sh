@@ -18,11 +18,13 @@ vagrant ssh swarm_manager_00 -c "sudo docker network create monitoring -d overla
 vagrant ssh swarm_manager_00 -c "sudo docker service create \
   --network=monitoring \
   --reserve-memory=3221225472 \
-  --env KAFKA=localhost:9092 --env ZOOKEEPER=localhost:2181 \
+  --env KAFKA=${MANAGER0_IP}:9092 --env ZOOKEEPER=${MANAGER0_IP}:2181 \
+  --env _KAFKA_advertised_host_name=${MANAGER0_IP} \
+  --env _KAFKA_advertised_port=9092 \
   --publish 2181:2181 --publish 9092:9092 \
   --name kafka \
   --replicas 1 \
-  antlypls/kafka"
+  flozano/kafka"
 
 # Start CAdvisor in global mode (an instance on every container) and forward 8080 so we can access the web UI if needed
 vagrant ssh swarm_manager_00 -c "sudo docker service create --network=monitoring --mode global --name cadvisor \
