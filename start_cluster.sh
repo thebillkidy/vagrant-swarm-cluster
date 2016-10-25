@@ -19,8 +19,6 @@ vagrant ssh swarm_manager_00 -c "sudo docker service create \
   --network=monitoring \
   --reserve-memory=3221225472 \
   --env KAFKA=${MANAGER0_IP}:9092 --env ZOOKEEPER=${MANAGER0_IP}:2181 \
-  --env _KAFKA_advertised_host_name=${MANAGER0_IP} \
-  --env _KAFKA_advertised_port=9092 \
   --publish 2181:2181 --publish 9092:9092 \
   --name kafka \
   --replicas 1 \
