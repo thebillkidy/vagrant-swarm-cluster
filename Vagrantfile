@@ -20,7 +20,7 @@ Vagrant.configure(2) do |config|
     config.vm.hostname = "swarm-manager-00"
     config.vm.network "private_network", ip: "10.0.7.11"
     config.vm.provision "shell", inline: $prepare_swarm_manager_script
-    config.vm.synced_folder ".", "/vagrant", disabled: true
+    config.vm.synced_folder ".", "/vagrant"
     
     config.vm.provider "virtualbox" do |v|
       v.memory = 1024

@@ -1,15 +1,14 @@
 #!/bin/bash
 
-echo "Destroying Consul containers..."
-sudo docker -H 10.0.7.11:2375 rm -f consul1
-sudo docker -H 10.0.7.12:2375 rm -f consul2
-sudo docker -H 10.0.7.13:2375 rm -f consul3
+# Note: Execute this script on the MANAGER host with SSH connections to the other nodes 
+MANAGER0_IP=10.0.7.11
+NODE0_IP=10.0.7.12
+NODE1_IP=10.0.7.13
 
-echo "Destroying Swarm Manager..."
-sudo docker -H 10.0.7.11:2375 rm -f swarm_manager_00
+echo "Hard resetting the swarm"
+sudo rm -rf /var/lib/docker/swarm
+sudo service docker restart
 
-# Run the first and second Swarm nodes
-echo "Destroying Swarm Agent #1..."
-sudo docker -H 10.0.7.12:2375 rm -f swarm_agent_00
-echo "Destroying Swarm Agent #2..."
-sudo docker -H 10.0.7.13:2375 rm -f swarm_agent_01
+echo "Unregistering nodes from the swarm"
+ssh vagrant@${NODE0_IP} "sudo docker swarm leave"
+ssh vagrant@${NODE1_IP} "sudo docker swarm leave"
