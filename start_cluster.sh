@@ -25,6 +25,7 @@ sudo docker service create \
   --replicas 1 \
   flozano/kafka
 
+
 # Start CAdvisor in global mode (an instance on every container) and forward 8080 so we can access the web UI if needed
 sudo docker service create --network=monitoring --mode global --name cadvisor \
   --mount type=bind,source=/,target=/rootfs,readonly=true \
@@ -39,9 +40,7 @@ sudo docker service create --network=monitoring --mode global --name cadvisor \
 #  -storage_driver=elasticsearch \
 #  -storage_driver_es_host="http://elasticsearch:9200"
 
-# Wait for the nodes to join the cluster
-echo "Waiting for the nodes to join the cluster..."
-sleep 5
+echo "Done"
 
 # Swarm cluster status
 #export DOCKER_HOST_OLD=`echo $DOCKER_HOST`
