@@ -7,7 +7,7 @@
     position: relative;
 }
 
-.SwarmNodeContainer-Header-Status-Offline {
+.SwarmNodeContainer-Header-Status-stopped {
     background: red;
     width: 10px;
     height: 10px;
@@ -17,7 +17,7 @@
     left: 5px;
 }
 
-.SwarmNodeContainer-Header-Status-Online {
+.SwarmNodeContainer-Header-Status-running {
     background: green;
     width: 10px;
     height: 10px;

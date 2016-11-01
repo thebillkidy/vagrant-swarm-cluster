@@ -6,7 +6,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createLogger from 'redux-logger'; // Logger
 import reducer from './reducers';
-import { getAllSwarmNodes } from './actions';
+import { getAllSwarmNodes, getAllContainers } from './actions';
 import thunk from 'redux-thunk'; // Allows us to write action creators that return a function instead of an action (async calls such as REST)
 
 const middleware = [ thunk ];
@@ -21,6 +21,7 @@ const store = createStore(
 );
 
 store.dispatch(getAllSwarmNodes());
+store.dispatch(getAllContainers());
 
 ReactDOM.render(
   <Provider store={store}>

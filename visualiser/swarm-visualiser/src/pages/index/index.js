@@ -3,16 +3,15 @@ import { connect } from 'react-redux';
 import logo from './logo.svg';
 import './style.css';
 import Swarm from '../../components/Swarm';
-import { getSwarmNodes } from '../../reducers/swarmNodes';
 
-const IndexPage = ({ swarmNodes }) => (
+const IndexPage = ({ swarmNodes, containers }) => (
     <div className="IndexPage">
         <div className="IndexPage-Header">
             <img src={logo} className="App-logo" alt="logo" />
             <h2>Docker Swarm Visualiser</h2>
         </div>
         <div className="IndexPage-Content">
-            <Swarm nodes={swarmNodes} />
+            <Swarm nodes={swarmNodes} containers={containers} />
         </div>
         <div className="IndexPage-Footer">
 
@@ -21,7 +20,8 @@ const IndexPage = ({ swarmNodes }) => (
 );
 
 const mapStateToProps = state => ({
-    swarmNodes: state.swarmNodes
+    swarmNodes: state.swarmNodes,
+    containers: state.swarmTasks
 });
 
 export default connect(

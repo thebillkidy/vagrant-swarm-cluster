@@ -1,20 +1,19 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './style.css';
 
-class SwarmNodeContainer extends Component {
-    render() {
-        const status = this.props.isOnline ? "SwarmNodeContainer-Header-Status-Online" : "SwarmNodeContainer-Header-Status-Offline";
+const SwarmNodeContainer = ({ container }) => (
+    <div className="SwarmNodeContainer">
+        <div className={`SwarmNodeContainer-Header-Status-${container.Status.State}`}></div>
 
-        return (
-            <div className="SwarmNodeContainer">
-                <div className={status}></div>
+        <div className="SwarmNodeContainer-Header">
+            <h1>{container.Spec.ContainerSpec.Image}</h1>
+            {/*<p>Reserved Memory: {container.Spec.Resources.Reservations.MemoryBytes / 1024 / 1024 / 1024}Gb</p>*/}
+        </div>
+    </div>
+);
 
-                <div className="SwarmNodeContainer-Header">
-                    <h1>{this.props.name}</h1>
-                </div>
-            </div>
-        );
-    }
-}
+SwarmNodeContainer.propTypes = {
+
+};
 
 export default SwarmNodeContainer;
