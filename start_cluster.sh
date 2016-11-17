@@ -32,6 +32,7 @@ docker service create \
    --publish 8083:8083 `# HTTP API Port` \
    --publish 8086:8086 `# Administrator Interface Port` \
    --mount type=volume,target=/var/lib/influxdb \
+   --env PRE_CREATE_DB=cadvisor
    --name influxdb \
    influxdb:latest
 
@@ -60,8 +61,11 @@ sudo docker service create --network=monitoring --mode global --name cadvisor \
   -storage_driver=kafka \
   -storage_driver_kafka_broker_list=kafka:9092 `# Same as the specified ENV variable in the kafka service` \
   -storage_driver_kafka_topic=container_stats `# Topic name` \
-  -storage_driver=elasticsearch \
-  -storage_driver_es_host="http://${MANAGER0_IP}:9200"
+  -storage_driver=influxdb \
+  -storage_driver_host="${MANAGER0_IP}:8086" \
+  -storage_driver_user="root" \
+  -storage_driver_password="root" \
+  -storage_driver_db="cadvisor"
 
 echo "Done creating infrastructure, waiting 30seconds now to init elasticsearch index"
 sleep 30
