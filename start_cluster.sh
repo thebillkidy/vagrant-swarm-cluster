@@ -25,25 +25,29 @@ sudo docker service create \
   --name kafka \
   --replicas 1 \
   flozano/kafka
-
-# Create a Elasticsearch container
-docker service create \
-  --network=monitoring \
-  --mount type=volume,target=/usr/share/elasticsearch/data \
-  --publish 9200:9200 --publish 9300:9300 \
-  --constraint node.hostname==swarm-agent-01 \
-  --name elasticsearch \
-  elasticsearch:2.4.0 \
-  -Des.network.publish_host=${MANAGER0_IP} \
-  -Des.network.host=0.0.0.0
   
-# Create the Kibana Container
+# Install Influxdb
 docker service create \
-  --network=monitoring \
-  --env ELASTICSEARCH_URL="http://${MANAGER0_IP}:9200" \
-  --publish 5601:5601 \
-  --name kibana \
-  kibana:4.6.0
+   --network=monitoring \
+   --publish 8083:8083 `# HTTP API Port` \
+   --publish 8086:8086 `# Administrator Interface Port` \
+   --mount type=volume,target=/var/lib/influxdb \
+   --name influxdb \
+   influxdb:latest
+
+# Install Grafana
+sudo docker service create \
+   --network=monitoring \
+   --publish 3000:3000 `# HTTP Port` \
+   --env GF_SERVER_ROOT_URL="http://10.48.98.232" \
+   --env GF_SECURITY_ADMIN_PASSWORD=admin" \
+   --env INFLUXDB_HOST=${MANAGER0_IP} \ 
+   --env INFLUXDB_PORT=8086 \
+   --env INFLUXDB_NAME=cadvisor \ 
+   --env INFLUXDB_USER=root \
+   --env INFLUXDB_PASS=root \
+   --name grafana \
+  grafana/grafana
 
 # Start CAdvisor in global mode (an instance on every container) and forward 8080 so we can access the web UI if needed
 sudo docker service create --network=monitoring --mode global --name cadvisor \
