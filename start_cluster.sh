@@ -21,10 +21,16 @@ sudo docker service create \
   --reserve-memory=3221225472 \
   --env KAFKA=${MANAGER0_IP}:9092 --env ZOOKEEPER=${MANAGER0_IP}:2181 \
   --publish 2181:2181 --publish 9092:9092 \
+  --constraint node.hostname==swarm-agent-00 \
   --name kafka \
   --replicas 1 \
   flozano/kafka
 
+# Create a Elasticsearch container
+docker service create --network=monitoring \
+  --mount type=volume,target=/usr/share/elasticsearch/data \
+  --constraint node.hostname==swarm-agent-01 \
+  --name elasticsearch elasticsearch:2.4.0
 
 # Start CAdvisor in global mode (an instance on every container) and forward 8080 so we can access the web UI if needed
 sudo docker service create --network=monitoring --mode global --name cadvisor \
