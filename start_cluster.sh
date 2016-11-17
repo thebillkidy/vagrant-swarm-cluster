@@ -27,10 +27,23 @@ sudo docker service create \
   flozano/kafka
 
 # Create a Elasticsearch container
-docker service create --network=monitoring \
+docker service create \
+  --network=monitoring \
   --mount type=volume,target=/usr/share/elasticsearch/data \
+  --publish 9200:9200 --publish 9300:9300 \
   --constraint node.hostname==swarm-agent-01 \
-  --name elasticsearch elasticsearch:2.4.0
+  --name elasticsearch \
+  elasticsearch:2.4.0 \
+  -Des.network.publish_host=10.0.7.11 \
+  -Des.network.host=0.0.0.0
+  
+# Create the Kibana Container
+docker service create \
+  --network=monitoring \
+  --env ELASTICSEARCH_URL="http://${MANAGER0_IP}:9200" \
+  --publish 5601:5601 \
+  --name kibana \
+  kibana:4.6.0
 
 # Start CAdvisor in global mode (an instance on every container) and forward 8080 so we can access the web UI if needed
 sudo docker service create --network=monitoring --mode global --name cadvisor \
