@@ -34,7 +34,7 @@ docker service create \
   --constraint node.hostname==swarm-agent-01 \
   --name elasticsearch \
   elasticsearch:2.4.0 \
-  -Des.network.publish_host=10.0.7.11 \
+  -Des.network.publish_host=${MANAGER0_IP} \
   -Des.network.host=0.0.0.0
   
 # Create the Kibana Container
@@ -55,10 +55,13 @@ sudo docker service create --network=monitoring --mode global --name cadvisor \
   google/cadvisor:latest \
   -storage_driver=kafka \
   -storage_driver_kafka_broker_list=kafka:9092 `# Same as the specified ENV variable in the kafka service` \
-  -storage_driver_kafka_topic=container_stats `# Topic name`
-#  -storage_driver=elasticsearch \
-#  -storage_driver_es_host="http://elasticsearch:9200"
+  -storage_driver_kafka_topic=container_stats `# Topic name` \
+  -storage_driver=elasticsearch \
+  -storage_driver_es_host="http://${MANAGER0_IP}:9200"
 
+echo "Done creating infrastructure, waiting 30seconds now to init elasticsearch index"
+sleep 30
+curl -XPUT http://${MANAGER0_IP}:9200/.kibana/index-pattern/cadvisor -d '{"title" : "cadvisor*",  "timeFieldName": "container_stats.timestamp"}'
 echo "Done"
 
 # Swarm cluster status
