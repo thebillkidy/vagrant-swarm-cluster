@@ -28,7 +28,7 @@ sudo docker service create \
   flozano/kafka
 
 # Install Influxdb
-docker service create \
+sudo docker service create \
    --network=monitoring \
    --publish 8083:8083 `# HTTP API Port` \
    --publish 8086:8086 `# Administrator Interface Port` \
