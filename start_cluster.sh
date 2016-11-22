@@ -19,7 +19,8 @@ sudo docker network create monitoring -d overlay
 sudo docker service create \
   --network=monitoring \
   --reserve-memory=3221225472 \
-  --env KAFKA=${MANAGER0_IP}:9092 --env ZOOKEEPER=${MANAGER0_IP}:2181 \
+  --env KAFKA=${MANAGER0_IP}:9092 \
+  --env ZOOKEEPER=${MANAGER0_IP}:2181 \
   --publish 2181:2181 --publish 9092:9092 \
   --constraint node.hostname==swarm-agent-00 \
   --name kafka \
@@ -32,7 +33,7 @@ docker service create \
    --publish 8083:8083 `# HTTP API Port` \
    --publish 8086:8086 `# Administrator Interface Port` \
    --mount type=volume,target=/var/lib/influxdb \
-   --env PRE_CREATE_DB=cadvisor
+   --env PRE_CREATE_DB=cadvisor \
    --name influxdb \
    influxdb:latest
 
@@ -41,10 +42,10 @@ sudo docker service create \
    --network=monitoring \
    --publish 3000:3000 `# HTTP Port` \
    --env GF_SERVER_ROOT_URL="http://10.48.98.232" \
-   --env GF_SECURITY_ADMIN_PASSWORD=admin" \
-   --env INFLUXDB_HOST=${MANAGER0_IP} \ 
+   --env GF_SECURITY_ADMIN_PASSWORD=admin \
+   --env INFLUXDB_HOST="${MANAGER0_IP}" \
    --env INFLUXDB_PORT=8086 \
-   --env INFLUXDB_NAME=cadvisor \ 
+   --env INFLUXDB_NAME=cadvisor \
    --env INFLUXDB_USER=root \
    --env INFLUXDB_PASS=root \
    --name grafana \
@@ -67,9 +68,6 @@ sudo docker service create --network=monitoring --mode global --name cadvisor \
   -storage_driver_password="root" \
   -storage_driver_db="cadvisor"
 
-echo "Done creating infrastructure, waiting 30seconds now to init elasticsearch index"
-sleep 30
-curl -XPUT http://${MANAGER0_IP}:9200/.kibana/index-pattern/cadvisor -d '{"title" : "cadvisor*",  "timeFieldName": "container_stats.timestamp"}'
 echo "Done"
 
 # Swarm cluster status
