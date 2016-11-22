@@ -1,5 +1,5 @@
 #!/bin/bash
-# Note: Execute this script on the MANAGER host with SSH connections to the other nodes 
+# Note: Execute this script on the MANAGER host with SSH connections to the other nodes
 MANAGER0_IP=10.0.7.11
 NODE0_IP=10.0.7.12
 NODE1_IP=10.0.7.13
@@ -26,7 +26,7 @@ sudo docker service create \
   --name kafka \
   --replicas 1 \
   flozano/kafka
-  
+
 # Install Influxdb
 docker service create \
    --network=monitoring \
