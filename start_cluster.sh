@@ -62,11 +62,12 @@ sudo docker service create --network=monitoring --mode global --name cadvisor \
   -storage_driver=kafka \
   -storage_driver_kafka_broker_list=kafka:9092 `# Same as the specified ENV variable in the kafka service` \
   -storage_driver_kafka_topic=container_stats `# Topic name` \
-  -storage_driver=influxdb \
-  -storage_driver_host="${MANAGER0_IP}:8086" \
-  -storage_driver_user="root" \
-  -storage_driver_password="root" \
-  -storage_driver_db="cadvisor"
+# Commented out influxdb driver since we need it in kafka
+#  -storage_driver=influxdb \
+#  -storage_driver_host="${MANAGER0_IP}:8086" \
+#  -storage_driver_user="root" \
+#  -storage_driver_password="root" \
+#  -storage_driver_db="cadvisor"
 
 echo "Done"
 
